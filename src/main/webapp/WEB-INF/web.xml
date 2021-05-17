@@ -8,7 +8,7 @@
 
     <context-param>
         <param-name>jdbcURL</param-name>
-        <param-value>jdbc:mysql://localhost:3306/bookstore</param-value>
+        <param-value>jdbc:sqlserver://localhost:1433;databaseName=Bookstore</param-value>
     </context-param>
 
     <context-param>

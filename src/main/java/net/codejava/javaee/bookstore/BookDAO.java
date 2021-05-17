@@ -1,5 +1,6 @@
 package net.codejava.javaee.bookstore;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -24,8 +25,9 @@ public class BookDAO {
     protected void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             } catch (ClassNotFoundException e) {
+
                 throw new SQLException(e);
             }
             jdbcConnection = DriverManager.getConnection(
@@ -37,6 +39,21 @@ public class BookDAO {
         if (jdbcConnection != null && !jdbcConnection.isClosed()) {
             jdbcConnection.close();
         }
+    }
+
+    public boolean login(Book book) throws SQLException {
+        String sql = "INSERT INTO uisers (title, author, price) VALUES (?, ?, ?)";
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setString(1, book.getTitle());
+        statement.setString(2, book.getAuthor());
+        statement.setFloat(3, book.getPrice());
+
+        boolean rowInserted = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowInserted;
     }
 
     public boolean insertBook(Book book) throws SQLException {

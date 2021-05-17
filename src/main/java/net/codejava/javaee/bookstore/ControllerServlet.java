@@ -34,6 +34,12 @@ public class ControllerServlet extends HttpServlet {
 
         try {
             switch (action) {
+                case "/submit":
+                    loginAcces(request, response);
+                    break;
+                case "/login":
+                    login(request, response);
+                    break;
                 case "/new":
                     showNewForm(request, response);
                     break;
@@ -65,6 +71,11 @@ public class ControllerServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("BookList.jsp");
         dispatcher.forward(request, response);
     }
+    private void login(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException{
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+        dispatcher.forward(request, response);
+    }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -80,6 +91,16 @@ public class ControllerServlet extends HttpServlet {
         request.setAttribute("book", existingBook);
         dispatcher.forward(request, response);
 
+    }
+
+    private void loginAcces(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        String title = request.getParameter("nickname");
+        String author = request.getParameter("password");
+
+//        Book newBook = new Book(title, author, price);
+//        bookDAO.login(newBook);
+        response.sendRedirect("list");
     }
 
     private void insertBook(HttpServletRequest request, HttpServletResponse response)
