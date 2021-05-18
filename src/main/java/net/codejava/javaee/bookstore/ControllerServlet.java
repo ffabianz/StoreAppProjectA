@@ -34,6 +34,12 @@ public class ControllerServlet extends HttpServlet {
 
         try {
             switch (action) {
+                case "/insertUser":
+                    newUser(request, response);
+                    break;
+                case "/newUser":
+                    userForm(request, response);
+                    break;
                 case "/submit":
                     loginAcces(request, response);
                     break;
@@ -77,9 +83,15 @@ public class ControllerServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("BookForm.jsp");
+        dispatcher.forward(request, response);
+    }
+    private void userForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("UserForm.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -94,13 +106,20 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void loginAcces(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
-        String title = request.getParameter("nickname");
-        String author = request.getParameter("password");
+            throws SQLException, IOException, ServletException {
+        String nickname = request.getParameter("nickname");
+        String password = request.getParameter("password");
 
-//        Book newBook = new Book(title, author, price);
-//        bookDAO.login(newBook);
-        response.sendRedirect("list");
+        User loginUser = new User(nickname, password);
+        boolean result = bookDAO.login(loginUser);
+        if(result==false){
+            RequestDispatcher dispatcher = request.getRequestDispatcher("LoginError.jsp");
+            dispatcher.forward(request, response);
+        }
+        else{
+            RequestDispatcher dispatcher = request.getRequestDispatcher("Loged.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void insertBook(HttpServletRequest request, HttpServletResponse response)
@@ -112,6 +131,25 @@ public class ControllerServlet extends HttpServlet {
         Book newBook = new Book(title, author, price);
         bookDAO.insertBook(newBook);
         response.sendRedirect("list");
+    }
+    private void newUser(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        String nickname = request.getParameter("nickname");
+        String lastName = request.getParameter("lastname");
+        String firstName = request.getParameter("firstname");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String phoneNumber = request.getParameter("phonenumber");
+        String street = request.getParameter("street");
+        String postalCode = request.getParameter("postalcode");
+        String city = request.getParameter("city");
+        int credit = Integer.parseInt(request.getParameter("credit"));
+        int isAdmin = Integer.parseInt(request.getParameter("isadmin"));
+
+
+        User newUser = new User(nickname, lastName, firstName, email, password, phoneNumber, street, postalCode, city, credit, isAdmin);
+        bookDAO.insertUser(newUser);
+        response.sendRedirect("Loged.jsp");
     }
 
     private void updateBook(HttpServletRequest request, HttpServletResponse response)

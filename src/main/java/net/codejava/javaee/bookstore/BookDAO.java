@@ -41,8 +41,29 @@ public class BookDAO {
         }
     }
 
-    public boolean login(Book book) throws SQLException {
-        String sql = "INSERT INTO uisers (title, author, price) VALUES (?, ?, ?)";
+    public boolean login(User user) throws SQLException {
+        String sql = "SELECT nickname, user_password from users where nickname like ? and  user_password like ?";
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setString(1, user.getNickname());
+        statement.setString(2, user.getPassword());
+
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next() == true){
+            resultSet.close();
+            statement.close();
+            return true;
+        }
+
+        resultSet.close();
+        statement.close();
+
+        return false;
+    }
+
+    public boolean insertBook(Book book) throws SQLException {
+        String sql = "INSERT INTO book (title, author, price) VALUES (?, ?, ?)";
         connect();
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -55,15 +76,22 @@ public class BookDAO {
         disconnect();
         return rowInserted;
     }
-
-    public boolean insertBook(Book book) throws SQLException {
-        String sql = "INSERT INTO book (title, author, price) VALUES (?, ?, ?)";
+    public boolean insertUser(User user) throws SQLException {
+        String sql = "INSERT INTO users (nickname,last_name,first_name,email,user_password,phone_number,street,postal_code,city,credit,is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         connect();
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, book.getTitle());
-        statement.setString(2, book.getAuthor());
-        statement.setFloat(3, book.getPrice());
+        statement.setString(1, user.getNickname());
+        statement.setString(2, user.getLastName());
+        statement.setString(3, user.getFirstName());
+        statement.setString(4, user.getEmail());
+        statement.setString(5, user.getPassword());
+        statement.setString(6, user.getPhoneNumber());
+        statement.setString(7, user.getStreet());
+        statement.setString(8, user.getPostalCode());
+        statement.setString(9, user.getCity());
+        statement.setInt(10, user.getCredit());
+        statement.setInt(11, user.getAdmin());
 
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();
