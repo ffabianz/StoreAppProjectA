@@ -6,11 +6,12 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+@WebServlet("/index.jsp")
 public class ControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private BookDAO bookDAO;
@@ -65,7 +66,7 @@ public class ControllerServlet extends HttpServlet {
                     updateBook(request, response);
                     break;
                 default:
-                    listBook(request, response);
+                    listAuction(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -144,6 +145,7 @@ public class ControllerServlet extends HttpServlet {
         bookDAO.insertBook(newBook);
         response.sendRedirect("list");
     }
+
     private void newUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         String nickname = request.getParameter("nickname");
