@@ -34,6 +34,9 @@ public class ControllerServlet extends HttpServlet {
 
         try {
             switch (action) {
+                case "/listAuction":
+                    listAuction(request, response);
+                    break;
                 case "/insertUser":
                     newUser(request, response);
                     break;
@@ -77,18 +80,27 @@ public class ControllerServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("BookList.jsp");
         dispatcher.forward(request, response);
     }
+
+    private void listAuction(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        List<Item> listItem = bookDAO.listAllItems();
+        request.setAttribute("listItem", listItem);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("ItemList.jsp");
+        dispatcher.forward(request, response);
+    }
+
     private void login(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
         RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
         dispatcher.forward(request, response);
     }
 
-
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("BookForm.jsp");
         dispatcher.forward(request, response);
     }
+
     private void userForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("UserForm.jsp");
@@ -145,7 +157,6 @@ public class ControllerServlet extends HttpServlet {
         String city = request.getParameter("city");
         int credit = Integer.parseInt(request.getParameter("credit"));
         int isAdmin = Integer.parseInt(request.getParameter("isadmin"));
-
 
         User newUser = new User(nickname, lastName, firstName, email, password, phoneNumber, street, postalCode, city, credit, isAdmin);
         bookDAO.insertUser(newUser);

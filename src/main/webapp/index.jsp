@@ -5,12 +5,17 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
+<h1><%= "ENI-Encheres" %>
 </h1>
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
-<a href="insert">insert book</a>
+
+<div class="connection">
+    <div>
 <a href="login">Login</a>
+    </div>
 <a href="newUser">newUser</a>
+</div>
+
+<a href="listAuction">list</a>
 </body>
 </html>

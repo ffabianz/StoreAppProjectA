@@ -76,6 +76,7 @@ public class BookDAO {
         disconnect();
         return rowInserted;
     }
+
     public boolean insertUser(User user) throws SQLException {
         String sql = "INSERT INTO users (nickname,last_name,first_name,email,user_password,phone_number,street,postal_code,city,credit,is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         connect();
@@ -125,6 +126,39 @@ public class BookDAO {
         disconnect();
 
         return listBook;
+    }
+    public List<Item> listAllItems() throws SQLException {
+        List<Item> listItem = new ArrayList<>();
+
+        String sql = "SELECT * FROM items";
+
+        connect();
+
+        Statement statement = jdbcConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id_item");
+            String itemName = resultSet.getString("item_name");
+            String description = resultSet.getString("item_description");
+            String startDate = resultSet.getString("bid_start_date");
+            String endDate = resultSet.getString("bid_end_date");
+            int startPrice = resultSet.getInt("starting_price");
+            int sellPrice = resultSet.getInt("selling_price");
+            int idUser = resultSet.getInt("id_user");
+            int idCategory = resultSet.getInt("id_category");
+
+
+            Item item = new Item(id, itemName, description, startDate, endDate, startPrice, sellPrice, idUser, idCategory);
+            listItem.add(item);
+        }
+
+        resultSet.close();
+        statement.close();
+
+        disconnect();
+
+        return listItem;
     }
 
     public boolean deleteBook(Book book) throws SQLException {
