@@ -11,8 +11,7 @@
     <h2>
         <a href="newUser">Add New User</a>
         &nbsp;&nbsp;&nbsp;
-        <a href="login">Login</a>
-
+        <a href="loginProcess">Login</a>
     </h2>
 </center>
 <div align="center">

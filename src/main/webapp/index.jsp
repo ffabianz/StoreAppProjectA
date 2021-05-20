@@ -11,9 +11,9 @@
 </h1>
 <br/>
 
-<div class="connection">
+<div>
     <div>
-<a href="login">Login</a>
+<a href="loginProcess">Login</a>
     </div>
 <a href="newUser">newUser</a>
 </div>

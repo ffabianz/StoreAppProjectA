@@ -1,6 +1,5 @@
 package net.codejava.javaee.bookstore;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -58,6 +57,7 @@ public class BookDAO {
 
         resultSet.close();
         statement.close();
+        disconnect();
 
         return false;
     }
@@ -83,16 +83,16 @@ public class BookDAO {
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString(1, user.getNickname());
-        statement.setString(2, user.getLastName());
-        statement.setString(3, user.getFirstName());
+        statement.setString(2, user.getLast_name());
+        statement.setString(3, user.getFirst_name());
         statement.setString(4, user.getEmail());
         statement.setString(5, user.getPassword());
-        statement.setString(6, user.getPhoneNumber());
+        statement.setString(6, user.getPhone_number());
         statement.setString(7, user.getStreet());
-        statement.setString(8, user.getPostalCode());
+        statement.setString(8, user.getPostal_code());
         statement.setString(9, user.getCity());
         statement.setInt(10, user.getCredit());
-        statement.setInt(11, user.getAdmin());
+        statement.setInt(11, user.getIs_admin());
 
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();

@@ -3,34 +3,48 @@ package net.codejava.javaee.bookstore;
 public class User {
     protected Integer id;
     protected String nickname;
-    protected String lastName;
-    protected String firstName;
+    protected String last_name;
+    protected String first_name;
     protected String email;
     protected String password;
-    protected String phoneNumber;
+    protected String phone_number;
     protected String street;
-    protected String postalCode;
+    protected String postal_code;
     protected String city;
     protected int credit;
-    protected int isAdmin;
+    protected int is_admin;
+
+    public User() {
+    }
 
     public User(String nickname, String password) {
         this.nickname = nickname;
         this.password = password;
     }
 
-    public User(String nickname, String lastName, String firstName, String email, String password, String phoneNumber, String street, String postalCode, String city, int credit, int isAdmin) {
+    public User(String nickname, String last_name, String first_name, String email, String password, String phone_number, String street, String postal_code, String city, int credit, int is_admin) {
         this.nickname = nickname;
-        this.lastName = lastName;
-        this.firstName = firstName;
+        this.last_name = last_name;
+        this.first_name = first_name;
         this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
+        this.phone_number = phone_number;
         this.street = street;
-        this.postalCode = postalCode;
+        this.postal_code = postal_code;
         this.city = city;
         this.credit = credit;
-        this.isAdmin = isAdmin;
+        this.is_admin = is_admin;
+    }
+
+    public User(String nickname, String last_name, String first_name, String email, String phone_number, String street, String postal_code, String city) {
+        this.nickname = nickname;
+        this.last_name = last_name;
+        this.first_name = first_name;
+        this.email = email;
+        this.phone_number = phone_number;
+        this.street = street;
+        this.postal_code = postal_code;
+        this.city = city;
     }
 
     public Integer getId() {
@@ -49,20 +63,20 @@ public class User {
         this.nickname = nickname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
     public String getEmail() {
@@ -81,12 +95,12 @@ public class User {
         this.password = password;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone_number() {
+        return phone_number;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone_number(String phoneNumber) {
+        this.phone_number = phoneNumber;
     }
 
     public String getStreet() {
@@ -97,12 +111,12 @@ public class User {
         this.street = street;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getPostal_code() {
+        return postal_code;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setPostal_code(String postal_code) {
+        this.postal_code = postal_code;
     }
 
     public String getCity() {
@@ -113,19 +127,19 @@ public class User {
         this.city = city;
     }
 
-    public Integer getCredit() {
+    public int getCredit() {
         return credit;
     }
 
-    public void setCredit(Integer credit) {
+    public void setCredit(int credit) {
         this.credit = credit;
     }
 
-    public int getAdmin() {
-        return isAdmin;
+    public int getIs_admin() {
+        return is_admin;
     }
 
-    public void setAdmin(int admin) {
-        isAdmin = admin;
+    public void setIs_admin(int is_admin) {
+        this.is_admin = is_admin;
     }
 }

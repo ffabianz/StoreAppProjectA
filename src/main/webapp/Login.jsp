@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>users Store Application</title>
+    <title>Encheres Application</title>
 </head>
 <body>
 <center>
@@ -17,7 +17,7 @@
 </center>
 <div align="center">
     <c:if test="${user != null}">
-    <form action="update" method="post">
+    <form action="login" method="post">
         </c:if>
         <c:if test="${user == null}">
         <form action="submit" method="post">
@@ -37,24 +37,24 @@
                     <input type="hidden" name="id" value="<c:out value='${user.id}' />" />
                 </c:if>
                 <tr>
-                    <th>nickname: </th>
+                    <th>email: </th>
                     <td>
-                        <input type="text" name="nickname" size="45"
-                               value="<c:out value='${user.nickname}' />"
+                        <input type="email" name="email" size="45"
+                               value="<c:out value='${user.email}' />"
                         />
                     </td>
                 </tr>
                 <tr>
                     <th>password: </th>
                     <td>
-                        <input type="text" name="password" size="45"
+                        <input type="password" name="password" size="45"
                                value="<c:out value='${user.password}' />"
                         />
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <input type="submit" value="Save" />
+                        <input type="submit" value="Login" />
                     </td>
                 </tr>
             </table>
