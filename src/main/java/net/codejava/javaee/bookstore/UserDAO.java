@@ -1,5 +1,10 @@
 package net.codejava.javaee.bookstore;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +44,7 @@ public class UserDAO {
 
     public User checkLogin(String email, String password) throws SQLException,
             ClassNotFoundException {
-        String sql = "SELECT nickname, email, user_password from users where email like ? and  user_password like ?";
+        String sql = "SELECT id_user, nickname, email, user_password from users where email like ? and  user_password like ?";
         connect();
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -54,6 +59,7 @@ public class UserDAO {
             user = new User();
             user.setNickname(result.getString("nickname"));
             user.setEmail(email);
+            user.setId_user(result.getInt("id_user"));
         }
 
         statement.close();
@@ -63,8 +69,8 @@ public class UserDAO {
     }
     public List<User> listAllUsers() throws SQLException {
         List<User> listUser = new ArrayList<>();
-//TODO change * for the attributes i need nothing more
-        String sql = "SELECT * FROM users";
+
+        String sql = "SELECT id_user, nickname, last_name, first_name, email, phone_number, street, postal_code, city FROM users";
 
         connect();
 
@@ -72,6 +78,7 @@ public class UserDAO {
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
+            int id_user = resultSet.getInt("id_user");
             String nickname = resultSet.getString("nickname");
             String lastName = resultSet.getString("last_name");
             String firstName = resultSet.getString("first_name");
@@ -83,7 +90,7 @@ public class UserDAO {
 
 
 
-            User user = new User(nickname, lastName, firstName, email, phoneNumber, street, postalCode,  city);
+            User user = new User(id_user, nickname, lastName, firstName, email, phoneNumber, street, postalCode,  city);
             listUser.add(user);
         }
 
@@ -93,5 +100,58 @@ public class UserDAO {
         disconnect();
 
         return listUser;
+    }
+
+    public User getUser(int actual_id_user) throws SQLException {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE id_user LIKE ?";
+
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setInt(1, actual_id_user);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            int id_user = resultSet.getInt("id_user");
+            String nickname = resultSet.getString("nickname");
+            String lastName = resultSet.getString("last_name");
+            String firstName = resultSet.getString("first_name");
+            String email = resultSet.getString("email");
+            String password = resultSet.getString("user_password");
+            String phoneNumber = resultSet.getString("phone_number");
+            String street = resultSet.getString("street");
+            String postalCode = resultSet.getString("postal_code");
+            String city = resultSet.getString("city");
+
+            user = new User(id_user, nickname, lastName, firstName, email,password, phoneNumber, street, postalCode,  city);
+        }
+
+        resultSet.close();
+        statement.close();
+
+        return user;
+    }
+    public boolean updateUser(User user) throws SQLException {
+        String sql = "UPDATE users SET nickname = ?, last_name = ?, first_name = ?, email = ?, user_password = ?, phone_number = ?, street = ?, postal_code = ?, city = ? WHERE id_user = ?";
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setString(1, user.getNickname());
+        statement.setString(2, user.getLast_name());
+        statement.setString(3, user.getFirst_name());
+        statement.setString(4, user.getEmail());
+        statement.setString(5, user.getUser_password());
+        statement.setString(6, user.getPhone_number());
+        statement.setString(7, user.getStreet());
+        statement.setString(8, user.getPostal_code());
+        statement.setString(9, user.getCity());
+        statement.setInt(10, user.getId_user());
+
+        boolean rowUpdated = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowUpdated;
     }
 }

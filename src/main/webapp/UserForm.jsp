@@ -7,7 +7,7 @@
 </head>
 <body>
 <center>
-    <h1>users Management</h1>
+    <h1>User Management</h1>
     <h2>
         <a href="/new">Add New user</a>
         &nbsp;&nbsp;&nbsp;
@@ -17,10 +17,10 @@
 </center>
 <div align="center">
     <c:if test="${user != null}">
-    <form action="update" method="post">
+    <form action="updateUser" method="post">
         </c:if>
         <c:if test="${user == null}">
-        <form action="insertUser" method="post">
+        <form action="insert" method="post">
             </c:if>
             <table border="1" cellpadding="5">
                 <caption>
@@ -29,12 +29,12 @@
                             Edit user
                         </c:if>
                         <c:if test="${user == null}">
-                            Banana
+                            Add New user
                         </c:if>
                     </h2>
                 </caption>
                 <c:if test="${user != null}">
-                    <input type="hidden" name="id" value="<c:out value='${user.id}' />" />
+                    <input type="hidden" name="id_user" value="<c:out value='${user.id_user}' />" />
                 </c:if>
                 <tr>
                     <th>Nickname: </th>
@@ -45,25 +45,25 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Last Name: </th>
+                    <th>Last name: </th>
                     <td>
-                        <input type="text" name="lastname" size="45"
-                               value="<c:out value='${user.lastname}' />"
+                        <input type="text" name="last_name" size="45"
+                               value="<c:out value='${user.last_name}' />"
                         />
                     </td>
                 </tr>
                 <tr>
-                    <th>First Name: </th>
+                    <th>First name: </th>
                     <td>
-                        <input type="text" name="firstname" size="45"
-                               value="<c:out value='${user.firstname}' />"
+                        <input type="text" name="first_name" size="5"
+                               value="<c:out value='${user.first_name}' />"
                         />
                     </td>
                 </tr>
                 <tr>
                     <th>Email: </th>
                     <td>
-                        <input type="text" name="email" size="45"
+                        <input type="text" name="email" size="5"
                                value="<c:out value='${user.email}' />"
                         />
                     </td>
@@ -71,23 +71,23 @@
                 <tr>
                     <th>Password: </th>
                     <td>
-                        <input type="text" name="password" size="45"
-                               value="<c:out value='${user.password}' />"
+                        <input type="text" name="user_password" size="5"
+                               value="<c:out value='${user.user_password}' />"
                         />
                     </td>
                 </tr>
                 <tr>
-                    <th>Phone Number: </th>
+                    <th>Phone number: </th>
                     <td>
-                        <input type="text" name="phonenumber" size="45"
-                               value="<c:out value='${user.phonenumber}' />"
+                        <input type="text" name="phone_number" size="5"
+                               value="<c:out value='${user.phone_number}' />"
                         />
                     </td>
                 </tr>
                 <tr>
                     <th>Street: </th>
                     <td>
-                        <input type="text" name="street" size="45"
+                        <input type="text" name="street" size="5"
                                value="<c:out value='${user.street}' />"
                         />
                     </td>
@@ -95,32 +95,16 @@
                 <tr>
                     <th>Postal Code: </th>
                     <td>
-                        <input type="text" name="postalcode" size="45"
-                               value="<c:out value='${user.postalcode}' />"
+                        <input type="text" name="postal_code" size="5"
+                               value="<c:out value='${user.postal_code}' />"
                         />
                     </td>
                 </tr>
                 <tr>
                     <th>City: </th>
                     <td>
-                        <input type="text" name="city" size="45"
+                        <input type="text" name="city" size="5"
                                value="<c:out value='${user.city}' />"
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <th>Credit: </th>
-                    <td>
-                        <input type="text" name="credit" size="45"
-                               value="<c:out value='${user.credit}' />"
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <th>Admin?: </th>
-                    <td>
-                        <input type="text" name="isadmin" size="45"
-                               value="<c:out value='${user.isadmin}' />"
                         />
                     </td>
                 </tr>

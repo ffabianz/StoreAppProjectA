@@ -1,12 +1,12 @@
 package net.codejava.javaee.bookstore;
 
 public class User {
-    protected Integer id;
+    protected int id_user;
     protected String nickname;
     protected String last_name;
     protected String first_name;
     protected String email;
-    protected String password;
+    protected String user_password;
     protected String phone_number;
     protected String street;
     protected String postal_code;
@@ -17,17 +17,17 @@ public class User {
     public User() {
     }
 
-    public User(String nickname, String password) {
+    public User(String nickname, String user_password) {
         this.nickname = nickname;
-        this.password = password;
+        this.user_password = user_password;
     }
 
-    public User(String nickname, String last_name, String first_name, String email, String password, String phone_number, String street, String postal_code, String city, int credit, int is_admin) {
+    public User(String nickname, String last_name, String first_name, String email, String user_password, String phone_number, String street, String postal_code, String city, int credit, int is_admin) {
         this.nickname = nickname;
         this.last_name = last_name;
         this.first_name = first_name;
         this.email = email;
-        this.password = password;
+        this.user_password = user_password;
         this.phone_number = phone_number;
         this.street = street;
         this.postal_code = postal_code;
@@ -47,13 +47,34 @@ public class User {
         this.city = city;
     }
 
-    public Integer getId() {
-        return id;
+    public User(int id_user, String nickname, String last_name, String first_name, String email, String user_password, String phone_number, String street, String postal_code, String city) {
+        this.id_user = id_user;
+        this.nickname = nickname;
+        this.last_name = last_name;
+        this.first_name = first_name;
+        this.email = email;
+        this.user_password = user_password;
+        this.phone_number = phone_number;
+        this.street = street;
+        this.postal_code = postal_code;
+        this.city = city;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public User(int id_user, String nickname, String last_name, String first_name, String email, String phone_number, String street, String postal_code, String city) {
+        this.id_user = id_user;
+        this.nickname = nickname;
+        this.last_name = last_name;
+        this.first_name = first_name;
+        this.email = email;
+        this.phone_number = phone_number;
+        this.street = street;
+        this.postal_code = postal_code;
+        this.city = city;
     }
+
+    public int getId_user() { return id_user; }
+
+    public void setId_user(int id_user) { this.id_user = id_user; }
 
     public String getNickname() {
         return nickname;
@@ -87,12 +108,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUser_password() {
+        return user_password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUser_password(String password) {
+        this.user_password = user_password;
     }
 
     public String getPhone_number() {

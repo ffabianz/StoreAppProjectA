@@ -47,8 +47,8 @@
                 <tr>
                     <th>password: </th>
                     <td>
-                        <input type="password" name="password" size="45"
-                               value="<c:out value='${user.password}' />"
+                        <input type="password" name="user_password" size="45"
+                               value="<c:out value='${user.user_password}' />"
                         />
                     </td>
                 </tr>

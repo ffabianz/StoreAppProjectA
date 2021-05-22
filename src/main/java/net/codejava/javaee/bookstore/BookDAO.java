@@ -46,7 +46,7 @@ public class BookDAO {
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString(1, user.getNickname());
-        statement.setString(2, user.getPassword());
+        statement.setString(2, user.getUser_password());
 
         ResultSet resultSet = statement.executeQuery();
         if(resultSet.next() == true){
@@ -86,7 +86,7 @@ public class BookDAO {
         statement.setString(2, user.getLast_name());
         statement.setString(3, user.getFirst_name());
         statement.setString(4, user.getEmail());
-        statement.setString(5, user.getPassword());
+        statement.setString(5, user.getUser_password());
         statement.setString(6, user.getPhone_number());
         statement.setString(7, user.getStreet());
         statement.setString(8, user.getPostal_code());

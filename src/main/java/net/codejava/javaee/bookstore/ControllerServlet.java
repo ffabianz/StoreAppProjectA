@@ -74,8 +74,14 @@ public class ControllerServlet extends HttpServlet {
                 case "/edit":
                     showEditForm(request, response);
                     break;
+                case "/editUser":
+                    showEditFormUser(request, response);
+                    break;
                 case "/update":
                     updateBook(request, response);
+                    break;
+                case "/updateUser":
+                    updateUser(request, response);
                     break;
                 default:
                     listAuction(request, response);
@@ -142,10 +148,10 @@ public class ControllerServlet extends HttpServlet {
     private void login(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
         String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String user_password = request.getParameter("user_password");
 
         try {
-            User user = userDAO.checkLogin(email, password);
+            User user = userDAO.checkLogin(email, user_password);
             String destPage = "Login.jsp";
 
             if (user != null) {
@@ -183,6 +189,15 @@ public class ControllerServlet extends HttpServlet {
         Book existingBook = bookDAO.getBook(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("BookForm.jsp");
         request.setAttribute("book", existingBook);
+        dispatcher.forward(request, response);
+
+    }
+    private void showEditFormUser(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        int id_user = Integer.parseInt(request.getParameter("id_user"));
+        User actualUser = userDAO.getUser(id_user);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("UserForm.jsp");
+        request.setAttribute("user", actualUser);
         dispatcher.forward(request, response);
 
     }
@@ -243,6 +258,23 @@ public class ControllerServlet extends HttpServlet {
 
         Book book = new Book(id, title, author, price);
         bookDAO.updateBook(book);
+        response.sendRedirect("list");
+    }
+    private void updateUser(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        int id_user = Integer.parseInt(request.getParameter("id_user"));
+        String nickname = request.getParameter("nickname");
+        String lastName = request.getParameter("last_name");
+        String firstName = request.getParameter("first_name");
+        String email = request.getParameter("email");
+        String user_password = request.getParameter("user_password");
+        String phoneNumber = request.getParameter("phone_number");
+        String street = request.getParameter("street");
+        String postalCode = request.getParameter("postal_code");
+        String city = request.getParameter("city");
+
+        User user = new User(id_user, nickname, lastName, firstName, email, user_password, phoneNumber, street, postalCode, city);
+        userDAO.updateUser(user);
         response.sendRedirect("list");
     }
 

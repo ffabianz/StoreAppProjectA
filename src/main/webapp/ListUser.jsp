@@ -18,6 +18,7 @@
     <table border="1" cellpadding="5">
         <caption><h2>List of Users</h2></caption>
         <tr>
+            <th>ID User</th>
             <th>Nickname</th>
             <th>First Name</th>
             <th>Last Name</th>
@@ -29,6 +30,8 @@
         </tr>
         <c:forEach var="user" items="${listUser}">
             <tr>
+
+                <td><c:out value="${user.id_user}" /></td>
                 <td><c:out value="${user.nickname}" /></td>
                 <td><c:out value="${user.last_name}" /></td>
                 <td><c:out value="${user.first_name}" /></td>
@@ -37,6 +40,11 @@
                 <td><c:out value="${user.street}" /></td>
                 <td><c:out value="${user.postal_code}" /></td>
                 <td><c:out value="${user.city}" /></td>
+                <td>
+                    <a href="editUser?id_user=<c:out value='${user.id_user}' />">Edit</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="delete?id_user=<c:out value='${user.id_user}' />">Delete</a>
+                </td>
             </tr>
         </c:forEach>
     </table>
