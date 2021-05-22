@@ -44,7 +44,7 @@ public class UserDAO {
 
     public User checkLogin(String email, String password) throws SQLException,
             ClassNotFoundException {
-        String sql = "SELECT id_user, nickname, email, user_password from users where email like ? and  user_password like ?";
+        String sql = "SELECT id_user, nickname, email, user_password, is_admin from users where email like ? and  user_password like ?";
         connect();
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -60,6 +60,7 @@ public class UserDAO {
             user.setNickname(result.getString("nickname"));
             user.setEmail(email);
             user.setId_user(result.getInt("id_user"));
+            user.setIs_admin(result.getInt("is_admin"));
         }
 
         statement.close();

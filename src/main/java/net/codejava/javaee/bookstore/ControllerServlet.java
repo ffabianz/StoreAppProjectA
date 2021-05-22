@@ -194,11 +194,28 @@ public class ControllerServlet extends HttpServlet {
     }
     private void showEditFormUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
+        HttpSession session = request.getSession(false);
         int id_user = Integer.parseInt(request.getParameter("id_user"));
-        User actualUser = userDAO.getUser(id_user);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("UserForm.jsp");
-        request.setAttribute("user", actualUser);
-        dispatcher.forward(request, response);
+        if(session != null) {
+            Object userToken = session.getAttribute("user");
+            int id_Confirmation = ((User) userToken).getId_user();
+            int admin_confirmation = ((User) userToken).getIs_admin();
+            if(admin_confirmation == 1){
+                User actualUser = userDAO.getUser(id_user);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("UserForm.jsp");
+                request.setAttribute("user", actualUser);
+                dispatcher.forward(request, response);
+                return;
+            }
+            if(id_user == id_Confirmation){
+                User actualUser = userDAO.getUser(id_user);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("UserForm.jsp");
+                request.setAttribute("user", actualUser);
+                dispatcher.forward(request, response);
+                return;
+            }
+        }
+        return;
 
     }
 
