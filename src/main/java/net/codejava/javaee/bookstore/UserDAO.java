@@ -155,4 +155,17 @@ public class UserDAO {
         disconnect();
         return rowUpdated;
     }
+    public boolean deleteUser(User user) throws SQLException {
+        String sql = "DELETE FROM users where id_user LIKE ?";
+
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setInt(1, user.getId_user());
+
+        boolean rowDeleted = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowDeleted;
+    }
 }

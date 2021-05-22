@@ -43,7 +43,7 @@
                 <td>
                     <a href="editUser?id_user=<c:out value='${user.id_user}' />">Edit</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="delete?id_user=<c:out value='${user.id_user}' />">Delete</a>
+                    <a href="deleteUser?id_user=<c:out value='${user.id_user}' />">Delete</a>
                 </td>
             </tr>
         </c:forEach>

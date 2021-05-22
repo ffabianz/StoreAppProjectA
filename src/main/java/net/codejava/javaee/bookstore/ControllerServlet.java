@@ -71,6 +71,9 @@ public class ControllerServlet extends HttpServlet {
                 case "/delete":
                     deleteBook(request, response);
                     break;
+                case "/deleteUser":
+                    deleteUser(request, response);
+                    break;
                 case "/edit":
                     showEditForm(request, response);
                     break;
@@ -304,4 +307,28 @@ public class ControllerServlet extends HttpServlet {
         response.sendRedirect("list");
 
     }
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        HttpSession session = request.getSession(false);
+        int id_user = Integer.parseInt(request.getParameter("id_user"));
+        if(session != null) {
+            Object userToken = session.getAttribute("user");
+            int id_Confirmation = ((User) userToken).getId_user();
+            int admin_confirmation = ((User) userToken).getIs_admin();
+            if(admin_confirmation == 1){
+                User user = new User(id_user);
+                userDAO.deleteUser(user);
+                response.sendRedirect("list");
+                return;
+            }
+            if(id_user == id_Confirmation){
+                User user = new User(id_user);
+                userDAO.deleteUser(user);
+                response.sendRedirect("list");
+                return;
+            }
+    }
+        return;
+    }
+
 }
