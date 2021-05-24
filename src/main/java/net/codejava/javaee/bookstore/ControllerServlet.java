@@ -17,6 +17,7 @@ public class ControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private BookDAO bookDAO;
     private UserDAO userDAO;
+    private ItemDAO itemDAO;
 
     public void init() {
         String jdbcURL = getServletContext().getInitParameter("jdbcURL");
@@ -24,6 +25,7 @@ public class ControllerServlet extends HttpServlet {
         String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
         bookDAO = new BookDAO(jdbcURL, jdbcUsername, jdbcPassword);
         userDAO = new UserDAO(jdbcURL, jdbcUsername, jdbcPassword);
+        itemDAO = new ItemDAO(jdbcURL, jdbcUsername, jdbcPassword);
 
     }
 
@@ -38,52 +40,44 @@ public class ControllerServlet extends HttpServlet {
 
         try {
             switch (action) {
-                case "/listAuction":
-                    listAuction(request, response);
-                    break;
-                case "/listUser":
+                case "/listUser":                               //working
                     listUsers(request, response);
                     break;
-                case "/insertUser":
+                case "/insertUser":                             //working
                     newUser(request, response);
                     break;
-                case "/newUser":
+                case "/newUser":                                //working
                     userForm(request, response);
                     break;
-                case "/submit":
+                case "/submit":                                 //working
                     login(request, response);
                     break;
-                case "/loginProcess":
+                case "/loginProcess":                            //working
                     loginProcess(request, response);
                     break;
-                case "/login":
+                case "/login":                                     //working
                     login(request, response);
                     break;
-                case "/logout":
+                case "/logout":                                 //working
                     logout(request, response);
                     break;
-                case "/new":
-                    showNewForm(request, response);
+                case "/newItem":                                //working
+                    itemForm(request, response);
                     break;
-                case "/insert":
-                    insertBook(request, response);
+                case "/insertItem":                             //working
+                    insertItem(request, response);
                     break;
-                case "/delete":
+                case "/delete":                                 // reference
                     deleteBook(request, response);
                     break;
-                case "/deleteUser":
+                case "/deleteUser":                             //working
                     deleteUser(request, response);
                     break;
-                case "/edit":
-                    showEditForm(request, response);
-                    break;
-                case "/editUser":
+                case "/editUser":                           //working
                     showEditFormUser(request, response);
                     break;
-                case "/update":
-                    updateBook(request, response);
-                    break;
-                case "/updateUser":
+
+                case "/updateUser":                             //working
                     updateUser(request, response);
                     break;
                 default:
@@ -93,14 +87,6 @@ public class ControllerServlet extends HttpServlet {
         } catch (SQLException ex) {
             throw new ServletException(ex);
         }
-    }
-
-    private void listBook(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
-        List<Book> listBook = bookDAO.listAllBooks();
-        request.setAttribute("listBook", listBook);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("BookList.jsp");
-        dispatcher.forward(request, response);
     }
 
     private void listAuction(HttpServletRequest request, HttpServletResponse response)
@@ -137,7 +123,7 @@ public class ControllerServlet extends HttpServlet {
         if (session != null) {
             session.removeAttribute("user");
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("ItemList.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/encheres");
             dispatcher.forward(request, response);
         }
     }
@@ -174,11 +160,12 @@ public class ControllerServlet extends HttpServlet {
         }
     }
 
-    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
+    private void itemForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("BookForm.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("ItemForm.jsp");
         dispatcher.forward(request, response);
     }
+
 
     private void userForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -218,25 +205,9 @@ public class ControllerServlet extends HttpServlet {
                 return;
             }
         }
+        response.sendRedirect("listUser");
         return;
 
-    }
-
-    private void loginAcces(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
-        String nickname = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        User loginUser = new User(nickname, password);
-        boolean result = bookDAO.login(loginUser);
-        if(result==false){
-            RequestDispatcher dispatcher = request.getRequestDispatcher("LoginError.jsp");
-            dispatcher.forward(request, response);
-        }
-        else{
-            RequestDispatcher dispatcher = request.getRequestDispatcher("Loged.jsp");
-            dispatcher.forward(request, response);
-        }
     }
 
     private void insertBook(HttpServletRequest request, HttpServletResponse response)
@@ -249,37 +220,51 @@ public class ControllerServlet extends HttpServlet {
         bookDAO.insertBook(newBook);
         response.sendRedirect("list");
     }
+    private void insertItem(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        HttpSession session = request.getSession(false);
+        int id_user = Integer.parseInt(request.getParameter("id_user")); // asking
+        if(session != null) {
+            Object userToken = session.getAttribute("user");
+            int id_Confirmation = ((User) userToken).getId_user(); // logged
+            if(id_Confirmation != 0 && id_Confirmation == id_user){           // if is valid and 2nd if who is logged is the same who ask
+                String street = ((User) userToken).getStreet();
+                String postal_code = ((User) userToken).getPostal_code();
+                String city = ((User) userToken).getCity();
+                String item_name = request.getParameter("item_name");
+                String item_description = request.getParameter("item_description");
+                String bid_start_date = request.getParameter("bid_start_date");
+                String bid_end_date= request.getParameter("bid_end_date");
+                float starting_price = Float.parseFloat(request.getParameter("starting_price"));
+                int id_category = Integer.parseInt(request.getParameter("id_category"));
+                Item newItem = new Item(item_name, item_description, bid_start_date, bid_end_date, starting_price, id_user, id_category);
+                itemDAO.insertItem(newItem,street,postal_code,city);
+                response.sendRedirect("/encheres");
+            }
+            else{
+                return;
+            }
+        }
+        return;
+    }
 
     private void newUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         String nickname = request.getParameter("nickname");
-        String lastName = request.getParameter("lastname");
-        String firstName = request.getParameter("firstname");
+        String last_name = request.getParameter("last_name");
+        String first_name = request.getParameter("first_name");
         String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String phoneNumber = request.getParameter("phonenumber");
+        String user_password = request.getParameter("user_password");
+        String phone_number = request.getParameter("phone_number");
         String street = request.getParameter("street");
-        String postalCode = request.getParameter("postalcode");
+        String postal_code = request.getParameter("postal_code");
         String city = request.getParameter("city");
-        int credit = Integer.parseInt(request.getParameter("credit"));
-        int isAdmin = Integer.parseInt(request.getParameter("isadmin"));
 
-        User newUser = new User(nickname, lastName, firstName, email, password, phoneNumber, street, postalCode, city, credit, isAdmin);
-        bookDAO.insertUser(newUser);
-        response.sendRedirect("Loged.jsp");
+        User newUser = new User(nickname, last_name, first_name, email, user_password, phone_number, street, postal_code, city);
+        userDAO.insertUser(newUser);
+        response.sendRedirect("/encheres");
     }
 
-    private void updateBook(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String title = request.getParameter("title");
-        String author = request.getParameter("author");
-        float price = Float.parseFloat(request.getParameter("price"));
-
-        Book book = new Book(id, title, author, price);
-        bookDAO.updateBook(book);
-        response.sendRedirect("list");
-    }
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         int id_user = Integer.parseInt(request.getParameter("id_user"));
@@ -295,7 +280,7 @@ public class ControllerServlet extends HttpServlet {
 
         User user = new User(id_user, nickname, lastName, firstName, email, user_password, phoneNumber, street, postalCode, city);
         userDAO.updateUser(user);
-        response.sendRedirect("list");
+        response.sendRedirect("listUser");
     }
 
     private void deleteBook(HttpServletRequest request, HttpServletResponse response)
@@ -318,16 +303,17 @@ public class ControllerServlet extends HttpServlet {
             if(admin_confirmation == 1){
                 User user = new User(id_user);
                 userDAO.deleteUser(user);
-                response.sendRedirect("list");
+                response.sendRedirect("ListUser");
                 return;
             }
             if(id_user == id_Confirmation){
                 User user = new User(id_user);
                 userDAO.deleteUser(user);
-                response.sendRedirect("list");
+                response.sendRedirect("ListUser");
                 return;
             }
     }
+        response.sendRedirect("listUser");
         return;
     }
 

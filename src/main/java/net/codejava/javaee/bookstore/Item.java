@@ -6,24 +6,23 @@ public class Item {
     protected String item_description;
     protected String bid_start_date;
     protected String bid_end_date;
-    protected int starting_price;
-    protected int selling_price;
+    protected float starting_price;
+    protected float selling_price;
     protected int id_user;
     protected int id_category;
 
-    public Item(int id_item, String item_name, String item_description, String bid_start_date, String bid_end_date, int starting_price, int selling_price, int id_user, int id_category) {
-        this.id_item = id_item;
+    public Item(String item_name, String item_description, String bid_start_date, String bid_end_date, float starting_price,int id_user, int id_category) {
         this.item_name = item_name;
         this.item_description = item_description;
         this.bid_start_date = bid_start_date;
         this.bid_end_date = bid_end_date;
         this.starting_price = starting_price;
-        this.selling_price = selling_price;
         this.id_user = id_user;
         this.id_category = id_category;
     }
 
-    public Item(String item_name, String item_description, String bid_start_date, String bid_end_date, int starting_price, int selling_price, int id_user, int id_category) {
+    public Item(int id_item, String item_name, String item_description, String bid_start_date, String bid_end_date, float starting_price, float selling_price, int id_user, int id_category) {
+        this.id_item = id_item;
         this.item_name = item_name;
         this.item_description = item_description;
         this.bid_start_date = bid_start_date;
@@ -74,19 +73,19 @@ public class Item {
         this.bid_end_date = bid_end_date;
     }
 
-    public int getStarting_price() {
+    public float getStarting_price() {
         return starting_price;
     }
 
-    public void setStarting_price(int starting_price) {
+    public void setStarting_price(float starting_price) {
         this.starting_price = starting_price;
     }
 
-    public int getSelling_price() {
+    public float getSelling_price() {
         return selling_price;
     }
 
-    public void setSelling_price(int selling_price) {
+    public void setSelling_price(float selling_price) {
         this.selling_price = selling_price;
     }
 

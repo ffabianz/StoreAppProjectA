@@ -26,7 +26,7 @@ public class User {
         this.user_password = user_password;
     }
 
-    public User(String nickname, String last_name, String first_name, String email, String user_password, String phone_number, String street, String postal_code, String city, int credit, int is_admin) {
+    public User(String nickname, String last_name, String first_name, String email, String user_password, String phone_number, String street, String postal_code, String city) {
         this.nickname = nickname;
         this.last_name = last_name;
         this.first_name = first_name;

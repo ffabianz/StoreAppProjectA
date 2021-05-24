@@ -20,7 +20,7 @@
     <form action="updateUser" method="post">
         </c:if>
         <c:if test="${user == null}">
-        <form action="insert" method="post">
+        <form action="insertUser" method="post">
             </c:if>
             <table border="1" cellpadding="5">
                 <caption>

@@ -44,7 +44,7 @@ public class UserDAO {
 
     public User checkLogin(String email, String password) throws SQLException,
             ClassNotFoundException {
-        String sql = "SELECT id_user, nickname, email, user_password, is_admin from users where email like ? and  user_password like ?";
+        String sql = "SELECT id_user, nickname, email,street, postal_code, city, user_password, is_admin from users where email like ? and  user_password like ?";
         connect();
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -59,6 +59,9 @@ public class UserDAO {
             user = new User();
             user.setNickname(result.getString("nickname"));
             user.setEmail(email);
+            user.setStreet(result.getString("street"));
+            user.setPostal_code(result.getString("postal_code"));
+            user.setCity(result.getString("city"));
             user.setId_user(result.getInt("id_user"));
             user.setIs_admin(result.getInt("is_admin"));
         }
@@ -68,6 +71,30 @@ public class UserDAO {
 
         return user;
     }
+
+    public boolean insertUser(User user) throws SQLException {
+        String sql = "INSERT INTO users (nickname,last_name,first_name,email,user_password,phone_number,street,postal_code,city,credit,is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setString(1, user.getNickname());
+        statement.setString(2, user.getLast_name());
+        statement.setString(3, user.getFirst_name());
+        statement.setString(4, user.getEmail());
+        statement.setString(5, user.getUser_password());
+        statement.setString(6, user.getPhone_number());
+        statement.setString(7, user.getStreet());
+        statement.setString(8, user.getPostal_code());
+        statement.setString(9, user.getCity());
+        statement.setInt(10, user.getCredit());
+        statement.setInt(11, user.getIs_admin());
+
+        boolean rowInserted = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowInserted;
+    }
+
     public List<User> listAllUsers() throws SQLException {
         List<User> listUser = new ArrayList<>();
 

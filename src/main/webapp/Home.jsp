@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,8 @@
     <br><br>
     <a href="logout">Logout</a>
     <a href="listUser">List USer</a>
+    <a href="newItem?id_user=<c:out value='${user.id_user}' />">New Item</a>
+
 </div>
 </body>
 </html>

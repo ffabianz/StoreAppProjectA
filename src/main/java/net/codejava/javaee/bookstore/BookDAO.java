@@ -138,18 +138,18 @@ public class BookDAO {
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
-            int id = resultSet.getInt("id_item");
-            String itemName = resultSet.getString("item_name");
-            String description = resultSet.getString("item_description");
-            String startDate = resultSet.getString("bid_start_date");
-            String endDate = resultSet.getString("bid_end_date");
-            int startPrice = resultSet.getInt("starting_price");
-            int sellPrice = resultSet.getInt("selling_price");
-            int idUser = resultSet.getInt("id_user");
-            int idCategory = resultSet.getInt("id_category");
+            int id_item = resultSet.getInt("id_item");
+            String item_name = resultSet.getString("item_name");
+            String item_description = resultSet.getString("item_description");
+            String bid_start_date = resultSet.getString("bid_start_date");
+            String bid_end_date = resultSet.getString("bid_end_date");
+            int starting_price = resultSet.getInt("starting_price");
+            int selling_price = resultSet.getInt("selling_price");
+            int id_user = resultSet.getInt("id_user");
+            int id_category = resultSet.getInt("id_category");
 
 
-            Item item = new Item(id, itemName, description, startDate, endDate, startPrice, sellPrice, idUser, idCategory);
+            Item item = new Item(id_item, item_name, item_description, bid_start_date, bid_end_date, starting_price, selling_price, id_user, id_category);
             listItem.add(item);
         }
 

@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
+    <!-- THIS IS THE MAIN PAGE-->
     <title>Auction Application</title>
 </head>
 <body>
