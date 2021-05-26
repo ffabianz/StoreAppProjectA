@@ -13,6 +13,21 @@
         <a href="newUser">Add New User</a>
         &nbsp;&nbsp;&nbsp;
         <a href="loginProcess">Login</a>
+        &nbsp;&nbsp;&nbsp;
+        <form action="listAuction" method="post">
+            Select a Category:&nbsp;
+        <select name="id_category">
+            <option value="0">none</option>
+            <c:forEach items="${listCategory}" var="category">
+                <option value="${category.id_category}"
+                        <c:if test="${category.id_category eq selectedCatId}">selected="selected"</c:if>
+                >
+                        ${category.category_name}
+                </option>
+            </c:forEach>
+        </select>
+            <input type="submit" value="Submit" />
+        </form>
     </h2>
 </center>
 <div align="center">

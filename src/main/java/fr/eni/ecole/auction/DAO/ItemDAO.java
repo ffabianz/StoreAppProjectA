@@ -1,10 +1,7 @@
-package net.codejava.javaee.bookstore;
+package fr.eni.ecole.auction.DAO;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import fr.eni.ecole.auction.BO.Item;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +75,73 @@ public class ItemDAO {
 
         statement.close();
         return rowInserted;
+    }
+    public List<Item> listAllItems() throws SQLException {
+        List<Item> listItem = new ArrayList<>();
+
+        String sql = "SELECT * FROM items";
+
+        connect();
+
+        Statement statement = jdbcConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            int id_item = resultSet.getInt("id_item");
+            String item_name = resultSet.getString("item_name");
+            String item_description = resultSet.getString("item_description");
+            String bid_start_date = resultSet.getString("bid_start_date");
+            String bid_end_date = resultSet.getString("bid_end_date");
+            int starting_price = resultSet.getInt("starting_price");
+            int selling_price = resultSet.getInt("selling_price");
+            int id_user = resultSet.getInt("id_user");
+            int id_category = resultSet.getInt("id_category");
+
+
+            Item item = new Item(id_item, item_name, item_description, bid_start_date, bid_end_date, starting_price, selling_price, id_user, id_category);
+            listItem.add(item);
+        }
+
+        resultSet.close();
+        statement.close();
+
+        disconnect();
+
+        return listItem;
+    }
+    public List<Item> listtemsBy(int selected_id) throws SQLException {
+        List<Item> listItem = new ArrayList<>();
+
+        String sql = "SELECT * FROM items WHERE id_category like ?";
+
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setLong(1, selected_id);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            int id_item = resultSet.getInt("id_item");
+            String item_name = resultSet.getString("item_name");
+            String item_description = resultSet.getString("item_description");
+            String bid_start_date = resultSet.getString("bid_start_date");
+            String bid_end_date = resultSet.getString("bid_end_date");
+            int starting_price = resultSet.getInt("starting_price");
+            int selling_price = resultSet.getInt("selling_price");
+            int id_user = resultSet.getInt("id_user");
+            int id_category = resultSet.getInt("id_category");
+
+
+            Item item = new Item(id_item, item_name, item_description, bid_start_date, bid_end_date, starting_price, selling_price, id_user, id_category);
+            listItem.add(item);
+        }
+
+        resultSet.close();
+        statement.close();
+
+        disconnect();
+
+        return listItem;
     }
 
 

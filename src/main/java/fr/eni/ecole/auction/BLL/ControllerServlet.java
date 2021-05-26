@@ -1,4 +1,11 @@
-package net.codejava.javaee.bookstore;
+package fr.eni.ecole.auction.BLL;
+
+import fr.eni.ecole.auction.BO.Category;
+import fr.eni.ecole.auction.BO.Item;
+import fr.eni.ecole.auction.BO.User;
+import fr.eni.ecole.auction.DAO.CategoryDAO;
+import fr.eni.ecole.auction.DAO.ItemDAO;
+import fr.eni.ecole.auction.DAO.UserDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,17 +22,17 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/index.jsp")
 public class ControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private BookDAO bookDAO;
     private UserDAO userDAO;
     private ItemDAO itemDAO;
+    private CategoryDAO categoryDAO;
 
     public void init() {
         String jdbcURL = getServletContext().getInitParameter("jdbcURL");
         String jdbcUsername = getServletContext().getInitParameter("jdbcUsername");
         String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
-        bookDAO = new BookDAO(jdbcURL, jdbcUsername, jdbcPassword);
         userDAO = new UserDAO(jdbcURL, jdbcUsername, jdbcPassword);
         itemDAO = new ItemDAO(jdbcURL, jdbcUsername, jdbcPassword);
+        categoryDAO = new CategoryDAO(jdbcURL,jdbcUsername,jdbcPassword);
 
     }
 
@@ -67,9 +74,6 @@ public class ControllerServlet extends HttpServlet {
                 case "/insertItem":                             //working
                     insertItem(request, response);
                     break;
-                case "/delete":                                 // reference
-                    deleteBook(request, response);
-                    break;
                 case "/deleteUser":                             //working
                     deleteUser(request, response);
                     break;
@@ -91,10 +95,26 @@ public class ControllerServlet extends HttpServlet {
 
     private void listAuction(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<Item> listItem = bookDAO.listAllItems();
-        request.setAttribute("listItem", listItem);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("ItemList.jsp");
-        dispatcher.forward(request, response);
+        List<Category> listCategory = categoryDAO.listCategories();
+        String id_category = request.getParameter("id_category");
+        if(id_category == null || id_category.equals("0")){
+            List<Item> listItem = itemDAO.listAllItems();
+            request.setAttribute("listCategory", listCategory);
+            request.setAttribute("listItem", listItem);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("ItemList.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+        if(id_category != null){
+            int selected_id = Integer.parseInt(id_category);
+            List<Item> listItem = itemDAO.listtemsBy(selected_id);
+            request.setAttribute("listCategory", listCategory);
+            request.setAttribute("listItem", listItem);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("ItemList.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
     }
 
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
@@ -110,7 +130,7 @@ public class ControllerServlet extends HttpServlet {
                return;
            }
         }
-            List<Item> listItem = bookDAO.listAllItems();
+            List<Item> listItem = itemDAO.listAllItems();
             request.setAttribute("listItem", listItem);
             RequestDispatcher dispatcher = request.getRequestDispatcher("ItemList.jsp");
             dispatcher.forward(request, response);
@@ -173,15 +193,6 @@ public class ControllerServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Book existingBook = bookDAO.getBook(id);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("BookForm.jsp");
-        request.setAttribute("book", existingBook);
-        dispatcher.forward(request, response);
-
-    }
     private void showEditFormUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -208,17 +219,6 @@ public class ControllerServlet extends HttpServlet {
         response.sendRedirect("listUser");
         return;
 
-    }
-
-    private void insertBook(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
-        String title = request.getParameter("title");
-        String author = request.getParameter("author");
-        float price = Float.parseFloat(request.getParameter("price"));
-
-        Book newBook = new Book(title, author, price);
-        bookDAO.insertBook(newBook);
-        response.sendRedirect("list");
     }
     private void insertItem(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
@@ -283,15 +283,6 @@ public class ControllerServlet extends HttpServlet {
         response.sendRedirect("listUser");
     }
 
-    private void deleteBook(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-
-        Book book = new Book(id);
-        bookDAO.deleteBook(book);
-        response.sendRedirect("list");
-
-    }
     private void deleteUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         HttpSession session = request.getSession(false);

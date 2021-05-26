@@ -1,10 +1,7 @@
-package net.codejava.javaee.bookstore;
+package fr.eni.ecole.auction.DAO;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import fr.eni.ecole.auction.BO.User;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

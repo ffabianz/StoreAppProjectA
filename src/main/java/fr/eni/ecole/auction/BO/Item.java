@@ -1,4 +1,4 @@
-package net.codejava.javaee.bookstore;
+package fr.eni.ecole.auction.BO;
 
 public class Item {
     protected int id_item;
