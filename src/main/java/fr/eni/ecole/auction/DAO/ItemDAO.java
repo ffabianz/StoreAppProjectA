@@ -1,6 +1,7 @@
 package fr.eni.ecole.auction.DAO;
 
 import fr.eni.ecole.auction.BO.Item;
+import fr.eni.ecole.auction.BO.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -142,6 +143,63 @@ public class ItemDAO {
         disconnect();
 
         return listItem;
+    }
+    public Item getItem(int actual_id_item) throws SQLException {
+        Item item = null;
+        String sql = "SELECT id_item, item_name, item_description, bid_end_date, id_category FROM items WHERE id_item LIKE ?";
+
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setInt(1, actual_id_item);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            int id_item = resultSet.getInt("id_item");
+            String item_name = resultSet.getString("item_name");
+            String item_description = resultSet.getString("item_description");
+            String bid_end_date = resultSet.getString("bid_end_date");
+            int id_category = resultSet.getInt("id_category");
+
+            item = new Item(id_item, item_name, item_description, bid_end_date, id_category);
+        }
+
+        resultSet.close();
+        statement.close();
+
+        return item;
+    }
+
+    public boolean updateItem(Item item) throws SQLException {
+        String sql = "UPDATE items SET item_name = ?, item_description = ?, bid_end_date = ?, id_category = ? WHERE id_item = ?";
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setString(1, item.getItem_name());
+        statement.setString(2, item.getItem_description());
+        statement.setString(3, item.getBid_end_date());
+        statement.setInt(4, item.getId_category());
+        statement.setInt(5, item.getId_item());
+
+        boolean rowUpdated = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowUpdated;
+    }
+
+    public boolean deleteItem(Item item) throws SQLException {
+        String sql = "DELETE FROM items where id_item LIKE ?";
+
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setInt(1, item.getId_item());
+
+        boolean rowDeleted = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowDeleted;
     }
 
 

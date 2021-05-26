@@ -77,12 +77,20 @@ public class ControllerServlet extends HttpServlet {
                 case "/deleteUser":                             //working
                     deleteUser(request, response);
                     break;
+                case "/deleteItem":
+                    deleteItem(request, response);
+                    break;
                 case "/editUser":                           //working
                     showEditFormUser(request, response);
                     break;
-
+                case "/editItem":                           //working
+                    showEditFormItem(request, response);
+                    break;
                 case "/updateUser":                             //working
                     updateUser(request, response);
+                    break;
+                case "/updateItem":                             //working
+                    updateItem(request, response);
                     break;
                 default:
                     listAuction(request, response);
@@ -220,6 +228,30 @@ public class ControllerServlet extends HttpServlet {
         return;
 
     }
+    private void showEditFormItem(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        int id_user = Integer.parseInt(request.getParameter("id_user"));
+        int id_item = Integer.parseInt(request.getParameter("id_item")); // id user how create the item
+        if(session != null) {
+            Object userToken = session.getAttribute("user");
+            if(userToken == null) {
+                response.sendRedirect("/encheres");
+                return;
+            }
+            int id_Confirmation = ((User) userToken).getId_user();      // id user how try to edit
+            if(id_user == id_Confirmation){
+                Item actualItem = itemDAO.getItem(id_item);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("EditItem.jsp");
+                request.setAttribute("item", actualItem);
+                dispatcher.forward(request, response);
+                return;
+            }
+        }
+        response.sendRedirect("/encheres");
+        return;
+
+    }
     private void insertItem(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         HttpSession session = request.getSession(false);
@@ -281,6 +313,41 @@ public class ControllerServlet extends HttpServlet {
         User user = new User(id_user, nickname, lastName, firstName, email, user_password, phoneNumber, street, postalCode, city);
         userDAO.updateUser(user);
         response.sendRedirect("listUser");
+    }
+    private void updateItem(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        int id_item = Integer.parseInt(request.getParameter("id_item"));
+        String item_name = request.getParameter("item_name");
+        String item_description = request.getParameter("item_description");
+        String bid_end_date = request.getParameter("bid_end_date");
+        int id_category = Integer.parseInt(request.getParameter("id_category"));
+
+        Item item = new Item(id_item,item_name, item_description, bid_end_date, id_category);
+        itemDAO.updateItem(item);
+        response.sendRedirect("/encheres");
+    }
+
+    private void deleteItem(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        HttpSession session = request.getSession(false);
+        int id_item = Integer.parseInt(request.getParameter("id_item"));
+        int id_user = Integer.parseInt(request.getParameter("id_user")); // how made it
+        if(session != null) {
+            Object userToken = session.getAttribute("user");
+            if(userToken == null) {
+                response.sendRedirect("/encheres");
+                return;
+            }
+            int id_Confirmation = ((User) userToken).getId_user();
+            if(id_user == id_Confirmation){
+                Item item = new Item(id_item);
+                itemDAO.deleteItem(item);
+                response.sendRedirect("/encheres");
+                return;
+            }
+        }
+        response.sendRedirect("/encheres");
+        return;
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response)

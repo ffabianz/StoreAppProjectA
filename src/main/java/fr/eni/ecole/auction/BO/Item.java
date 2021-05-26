@@ -33,6 +33,25 @@ public class Item {
         this.id_category = id_category;
     }
 
+    public Item(int id_item) {
+        this.id_item = id_item;
+    }
+
+    public Item(int id_item, String item_name, String item_description, String bid_end_date, int id_category) {
+        this.id_item = id_item;
+        this.item_name = item_name;
+        this.item_description = item_description;
+        this.bid_end_date = bid_end_date;
+        this.id_category = id_category;
+    }
+
+    public Item(String item_name, String item_description, String bid_end_date, int id_category) {
+        this.item_name = item_name;
+        this.item_description = item_description;
+        this.bid_end_date = bid_end_date;
+        this.id_category = id_category;
+    }
+
     public int getId_item() {
         return id_item;
     }

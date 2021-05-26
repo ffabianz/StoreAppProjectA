@@ -55,6 +55,11 @@
                 <td><c:out value="${item.selling_price}" /></td>
                 <td><c:out value="${item.id_user}" /></td>
                 <td><c:out value="${item.id_category}" /></td>
+                <td>
+                    <a href="editItem?id_item=<c:out value='${item.id_item}' />&id_user=<c:out value='${item.id_user}'/>">Edit</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="deleteItem?id_item=<c:out value='${item.id_item}' />&id_user=<c:out value='${item.id_user}'/>">Delete</a>
+                </td>
             </tr>
         </c:forEach>
     </table>
