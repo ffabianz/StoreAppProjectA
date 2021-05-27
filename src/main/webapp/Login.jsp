@@ -58,6 +58,11 @@
                     </td>
                 </tr>
             </table>
+                <c:if test="${message != null}">
+                    <h2 style="color: red">
+                        <c:out value = "${message}"/>
+                    </h2>
+                </c:if>
         </form>
 </div>
 </body>

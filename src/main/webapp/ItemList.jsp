@@ -14,6 +14,8 @@
         &nbsp;&nbsp;&nbsp;
         <a href="loginProcess">Login</a>
         &nbsp;&nbsp;&nbsp;
+        <a href="logout">Logout</a>
+        &nbsp;&nbsp;&nbsp;
         <form action="listAuction" method="post">
             Select a Category:&nbsp;
         <select name="id_category">

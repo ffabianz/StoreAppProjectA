@@ -12,6 +12,8 @@
         <a href="/new">Add New item</a>
         &nbsp;&nbsp;&nbsp;
         <a href="/list">List All items</a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="logout">Logout</a>
 
     </h2>
 </center>

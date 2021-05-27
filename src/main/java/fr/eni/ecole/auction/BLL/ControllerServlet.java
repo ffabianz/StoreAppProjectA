@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebServlet("/index.jsp")
-public class ControllerServlet extends HttpServlet {
+public class ControllerServlet extends HttpServlet{
     private static final long serialVersionUID = 1L;
     private UserDAO userDAO;
     private ItemDAO itemDAO;
@@ -179,7 +178,6 @@ public class ControllerServlet extends HttpServlet {
                 String message = "Invalid email/password";
                 request.setAttribute("message", message);
             }
-
             RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
             dispatcher.forward(request, response);
 
@@ -281,7 +279,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void newUser(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
+            throws SQLException, IOException, ServletException {
         String nickname = request.getParameter("nickname");
         String last_name = request.getParameter("last_name");
         String first_name = request.getParameter("first_name");
@@ -293,8 +291,16 @@ public class ControllerServlet extends HttpServlet {
         String city = request.getParameter("city");
 
         User newUser = new User(nickname, last_name, first_name, email, user_password, phone_number, street, postal_code, city);
-        userDAO.insertUser(newUser);
-        response.sendRedirect("/encheres");
+        try{
+            userDAO.insertUser(newUser);
+        }catch (SQLException ex){
+            String message = "nickname or email already used";
+            request.setAttribute("message", message);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("UserForm.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+            response.sendRedirect("/encheres");
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
